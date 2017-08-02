@@ -59,9 +59,9 @@ class BookItem extends Component {
                   </div>
                 </div>
                 <div className="book-title">{book.title}</div>
-                    {book.authors.map((author) => {
-                      return <div className="book-authors">{ author } </div>
-                    })}
+                {book.authors.map((author) => {
+                  return <div className="book-authors">{author} </div>
+                })}
               </div>
             </li>
           ))}
@@ -70,5 +70,5 @@ class BookItem extends Component {
     )
   }
 }
-
+//test
 export default ListBooks
