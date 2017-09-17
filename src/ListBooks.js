@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
   render() {
-    const { books } = this.props
-    let currentlyReading = books.filter((book) => book.shelf === "currentlyReading")
-    let wantToRead = books.filter((book) => book.shelf === "wantToRead")
-    let read = books.filter((book) => book.shelf === "read")
+    const { books, onMoveBook } = this.props
+    let currentlyReading, wantToRead, read
+    if (books !== 'undefined') {
+      currentlyReading = books.filter((book) => book.shelf === "currentlyReading")
+      wantToRead = books.filter((book) => book.shelf === "wantToRead")
+      read = books.filter((book) => book.shelf === "read")
+    }
 
     return (
       <div className="list-books">
@@ -17,15 +20,24 @@ class ListBooks extends Component {
           <div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Currently Reading</h2>
-              <BookItem books={currentlyReading}/>
+              <BookItem 
+                books={currentlyReading}
+                onMoveBook={onMoveBook}
+              />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Want to Read</h2>
-              <BookItem books={wantToRead}/>
+              <BookItem
+                books={wantToRead}
+                onMoveBook={onMoveBook}
+                />
             </div>
             <div className="bookshelf">
               <h2 className="bookshelf-title">Read</h2>
-              <BookItem books={read}/>
+              <BookItem
+                books={read}
+                onMoveBook={onMoveBook}
+              />
             </div>
           </div>
         </div>
@@ -36,39 +48,53 @@ class ListBooks extends Component {
     )
   }
 }
-class BookItem extends Component {
+export class BookItem extends Component {
   render() {
-    const { books } = this.props
-
-    return (
-      <div className="bookshelf-books">
-        <ol className="books-grid">
-          {books.map((book) => (
-            <li key={book.id} className='book-list-item'>
-              <div className="book">
-                <div className="book-top">
-                  <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }} />
-                  <div className="book-shelf-changer">
-                    <select>
-                      <option value="none" disabled>Move to...</option>
-                      <option value="currentlyReading">Currently Reading</option>
-                      <option value="wantToRead">Want to Read</option>
-                      <option value="read">Read</option>
-                      <option value="none">None</option>
-                    </select>
+    const { books, onMoveBook } = this.props
+    if (books !== undefined && books.length > 0) {
+      return (
+        <div className="bookshelf-books">
+          <ol className="books-grid">
+            {books.map((book) => (
+              <li key={book.id} className='book-list-item'>
+                <div className="book">
+                  <div className="book-top">
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks !== undefined ? book.imageLinks.thumbnail:""})` }} />
+                    <ShelfChanger
+                      book={book}
+                      onMoveBook={onMoveBook}
+                    />
                   </div>
+                  <div className="book-title">{book.title}</div>
                 </div>
-                <div className="book-title">{book.title}</div>
-                {book.authors.map((author) => {
-                  return <div className="book-authors">{author} </div>
-                })}
-              </div>
-            </li>
-          ))}
-        </ol>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )
+    } else {
+      return <div></div>
+    }
+  }
+}
+class ShelfChanger extends Component {
+
+  render() {
+    const { onMoveBook, book } = this.props
+    return (
+      <div className="book-shelf-changer">
+          <select 
+            value={book.shelf || "none"}
+            onChange={onMoveBook(book)}
+          >
+            <option disabled>Move to...</option>
+            <option value="currentlyReading">Currently Reading</option>
+            <option value="wantToRead">Want to Read</option>
+            <option value="read">Read</option>
+            <option value="none">None</option>
+          </select>
       </div>
     )
   }
 }
-//test
 export default ListBooks

@@ -15,9 +15,23 @@ class BooksApp extends Component {
     BooksAPI.getAll().then((books) => {
       this.setState({ books })
     })
-    setTimeout(() => {
-      console.log(this.state.books)
-    }, 2000)
+  }
+
+  moveBook = (book) => (event) => {
+    const books = this.state.books
+    const shelf = event.target.value
+    const indexOfBook = (id) => {
+      return books.findIndex(i => i.id === book.id)
+    }
+    if(indexOfBook(book.id) <= 0) {
+      // Checks if the book is coming from search or shelf
+      books.push(book)
+    }
+    books[indexOfBook(book.id)].shelf = shelf 
+    this.setState((state) => ({
+      books
+    }))
+    BooksAPI.update(book, shelf)
   }
 
   render() {
@@ -26,11 +40,13 @@ class BooksApp extends Component {
         <Route exact path="/" render={() => (
           <ListBooks
             books={this.state.books}
+            onMoveBook={this.moveBook}
           />
         )}/>
         <Route path="/search" render={() => (
           <SearchPage
-
+            shelvedBooks={this.state.books}
+            onMoveBook={this.moveBook}
           />
         )}/>
       </div>
