@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
-import { BookItem } from './ListBooks'
+/*eslint semi: "error"*/
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import * as BooksAPI from './BooksAPI';
+import { BookItem } from './ListBooks';
 
 class SearchPage extends Component {
   state = {
@@ -10,24 +11,24 @@ class SearchPage extends Component {
   }
 
   updateQuery = (query) => {
-    const { shelvedBooks } = this.props
-    this.setState({ query: query })
+    const { shelvedBooks } = this.props;
+    this.setState({ query: query });
 
     BooksAPI.search(query, 20).then((books) => {
       for (let book of books) {
         // Checks if a book is already on a shelf
         for (let shelvedBook of shelvedBooks) {
           if (book.id === shelvedBook.id) {
-            book.shelf = shelvedBook.shelf
+            book.shelf = shelvedBook.shelf;
           }
         }
       }
-      this.setState({ books })
-    })
+      this.setState({ books });
+    });
   }
 
   render() {
-  const { onMoveBook } = this.props
+  const { onMoveBook } = this.props;
 
     return (
       <div className="search-books">
@@ -50,8 +51,8 @@ class SearchPage extends Component {
         />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default SearchPage
+export default SearchPage;

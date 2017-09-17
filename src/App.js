@@ -1,38 +1,39 @@
-import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
-import './App.css'
+/*eslint semi: "error"*/
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
+import * as BooksAPI from './BooksAPI';
+import './App.css';
 
-import ListBooks from './ListBooks'
-import SearchPage from './SearchPage'
-
+import ListBooks from './ListBooks';
+import SearchPage from './SearchPage';
 
 class BooksApp extends Component {
   state = {
-    books: []
-  }
+    books: [],
+  };
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      this.setState({ books })
-    })
-  }
+      this.setState({ books });
+    });
+  };
 
   moveBook = (book) => (event) => {
-    const books = this.state.books
-    const shelf = event.target.value
+    const books = this.state.books;
+    const shelf = event.target.value;
     const indexOfBook = (id) => {
-      return books.findIndex(i => i.id === book.id)
-    }
+      return books.findIndex(i => i.id === book.id);
+    };
     if(indexOfBook(book.id) <= 0) {
       // Checks if the book is coming from search or shelf
-      books.push(book)
+      books.push(book);
     }
-    books[indexOfBook(book.id)].shelf = shelf 
+    books[indexOfBook(book.id)].shelf = shelf ;
+
     this.setState((state) => ({
-      books
-    }))
-    BooksAPI.update(book, shelf)
-  }
+      books,
+    }));
+    BooksAPI.update(book, shelf);
+  };
 
   render() {
     return (
@@ -50,8 +51,8 @@ class BooksApp extends Component {
           />
         )}/>
       </div>
-    )
+    );
   }
 }
 
-export default BooksApp
+export default BooksApp;

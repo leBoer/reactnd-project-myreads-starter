@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+/*eslint semi: "error"*/
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class ListBooks extends Component {
   render() {
-    const { books, onMoveBook } = this.props
-    let currentlyReading, wantToRead, read
+    const { books, onMoveBook } = this.props;
+    let currentlyReading, wantToRead, read;
     if (books !== 'undefined') {
-      currentlyReading = books.filter((book) => book.shelf === "currentlyReading")
-      wantToRead = books.filter((book) => book.shelf === "wantToRead")
-      read = books.filter((book) => book.shelf === "read")
+      currentlyReading = books.filter((book) => book.shelf === "currentlyReading");
+      wantToRead = books.filter((book) => book.shelf === "wantToRead");
+      read = books.filter((book) => book.shelf === "read");
     }
 
     return (
@@ -45,12 +46,12 @@ class ListBooks extends Component {
           <Link to="/search">Add a book</Link>
         </div>
       </div>
-    )
+    );
   }
 }
 export class BookItem extends Component {
   render() {
-    const { books, onMoveBook } = this.props
+    const { books, onMoveBook } = this.props;
     if (books !== undefined && books.length > 0) {
       return (
         <div className="bookshelf-books">
@@ -71,16 +72,16 @@ export class BookItem extends Component {
             ))}
           </ol>
         </div>
-      )
+      );
     } else {
-      return <div></div>
+      return <div></div>;
     }
   }
 }
 class ShelfChanger extends Component {
 
   render() {
-    const { onMoveBook, book } = this.props
+    const { onMoveBook, book } = this.props;
     return (
       <div className="book-shelf-changer">
           <select 
@@ -94,7 +95,7 @@ class ShelfChanger extends Component {
             <option value="none">None</option>
           </select>
       </div>
-    )
+    );
   }
 }
-export default ListBooks
+export default ListBooks;
